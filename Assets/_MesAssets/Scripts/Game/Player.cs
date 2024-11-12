@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private float _canFire = -1;
     private bool _isTripleActive = false;
     private GameObject _shield;
+    private Animator _animator;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0f, -2.4f, 0f);  // position initiale du joueur
         _cadenceInitiale = _delai;
         _shield = transform.GetChild(0).gameObject;
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -61,6 +63,21 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0f);
         transform.Translate(direction * Time.deltaTime * _speed);
 
+        if(direction.x > 0f)
+        {
+            _animator.SetBool("Turn_Right", true);
+            _animator.SetBool("Turn_Left", false);
+        }
+        else if (direction.x < 0f)
+        {
+            _animator.SetBool("Turn_Right", false);
+            _animator.SetBool("Turn_Left", true);
+        }
+        else
+        {
+            _animator.SetBool("Turn_Right", false);
+            _animator.SetBool("Turn_Left", false);
+        }
 
         //Gérer la zone verticale et horizontale
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -8.3f, 8.3f),

@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 209856574}
   - component: {fileID: 209856572}
   - component: {fileID: 209856576}
+  - component: {fileID: 209856577}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -489,6 +490,27 @@ MonoBehaviour:
   _tripleLaserPrefab: {fileID: 9216291288243855323, guid: 45fe02b1379ec7c4eaf95360c229f69b, type: 3}
   _delai: 0.5
   _viesJoueur: 3
+--- !u!95 &209856577
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209856571}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 24afe6373094f3c4382424405a571a1c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &277984002
 GameObject:
   m_ObjectHideFlags: 0
