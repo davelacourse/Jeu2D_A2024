@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _tripleLaserPrefab = default;
     [SerializeField] private float _delai = 0.5f;
     [SerializeField] private int _viesJoueur = 3;
+    [SerializeField] private GameObject _playerHurt1 = default;
+    [SerializeField] private GameObject _playerHurt2 = default;
+    [SerializeField] private GameObject _bigExplosionPrefab = default;
 
     private float _cadenceInitiale;
     private float _canFire = -1;
@@ -96,6 +99,14 @@ public class Player : MonoBehaviour
         else
         {
             _viesJoueur--;
+            if (_viesJoueur == 2)
+            {
+                _playerHurt1.SetActive(true);
+            }
+            else if (_viesJoueur == 1)
+            {
+                _playerHurt2.SetActive(true);
+            }
             UIManagerGame.Instance.ChangeLivesDisplayImage(_viesJoueur);
         }
  
@@ -104,6 +115,7 @@ public class Player : MonoBehaviour
         {
             SpawnManager spawnManager = FindAnyObjectByType<SpawnManager>();
             spawnManager.MortJoueur();
+            Instantiate(_bigExplosionPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }
