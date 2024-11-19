@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _playerHurt1 = default;
     [SerializeField] private GameObject _playerHurt2 = default;
     [SerializeField] private GameObject _bigExplosionPrefab = default;
+    [SerializeField] private AudioClip _gameOverSound = default;
 
     private float _cadenceInitiale;
     private float _canFire = -1;
@@ -116,6 +117,7 @@ public class Player : MonoBehaviour
             SpawnManager spawnManager = FindAnyObjectByType<SpawnManager>();
             spawnManager.MortJoueur();
             Instantiate(_bigExplosionPrefab, transform.position, Quaternion.identity);
+            AudioSource.PlayClipAtPoint(_gameOverSound, Camera.main.transform.position);
             Destroy(this.gameObject);
         }
     }

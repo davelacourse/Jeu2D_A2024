@@ -21,6 +21,7 @@ public class PowerUp : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.tag == "Player") {
             Player player = other.GetComponent<Player>();
+            AudioSource.PlayClipAtPoint(_powerUpSound, Camera.main.transform.position);
             Destroy(this.gameObject);
             //AudioSource.PlayClipAtPoint(_powerUpSound, Camera.main.transform.position, 0.6f);
             if (player != null) {
