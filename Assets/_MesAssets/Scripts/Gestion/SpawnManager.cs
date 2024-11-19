@@ -17,8 +17,8 @@ public class SpawnManager : MonoBehaviour
 
     private void StartSpawning()
     {
-        StartCoroutine(SpawnEnemies());
-        StartCoroutine(SpawnPUCoroutine());
+        StartCoroutine(SpawnEnemies());  // Démarre la coroutine pour l'apparition des ennemis
+        StartCoroutine(SpawnPUCoroutine());  // Démarre la coroutine pour l'apparition des PowerUps
     }
 
     // Coroutine pour l'apparition des PowerUps
@@ -31,7 +31,7 @@ public class SpawnManager : MonoBehaviour
             //Choisi au hasard un powerUp faisant partie du tableau et l'instancie
             int randomPU = Random.Range(0, _powerUpPrefab.Length);
             Instantiate(_powerUpPrefab[randomPU], positionSpawn, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(3f, 5f));
+            yield return new WaitForSeconds(Random.Range(10f, 15f));
         }
     }
 
@@ -43,10 +43,21 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawn)
         {
             Vector3 positionSpawn = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
-            //Choisi au hasard un enemy faisant partie du tableau et l'instancie
-            int randomEnemy = Random.Range(0, _enemiesPrefabs.Length);
-            GameObject newEnemy = Instantiate(_enemiesPrefabs[randomEnemy], positionSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _container.transform;
+            // Si le pointage est supérieur à 1000 on instancie au hasard un des deux ennemis
+            // Sinon on instancie seulement le premier
+            if(GameManager.Instance.Score > 1000)
+            {
+                //Choisi au hasard un enemy faisant partie du tableau et l'instancie
+                int randomEnemy = Random.Range(0, _enemiesPrefabs.Length);
+                GameObject newEnemy = Instantiate(_enemiesPrefabs[randomEnemy], positionSpawn, Quaternion.identity);
+                newEnemy.transform.parent = _container.transform;
+            }
+            else
+            {
+                GameObject newEnemy = Instantiate(_enemiesPrefabs[0], positionSpawn, Quaternion.identity);
+                newEnemy.transform.parent = _container.transform;
+            }
+
             yield return new WaitForSeconds(Random.Range(GameManager.Instance.TempsArraritionEnnemis, 
                 GameManager.Instance.TempsArraritionEnnemis + 3f));
         }

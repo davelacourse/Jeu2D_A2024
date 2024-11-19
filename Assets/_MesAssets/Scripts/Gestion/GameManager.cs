@@ -46,11 +46,16 @@ public class GameManager : MonoBehaviour
     {
         _score += points;
         UIManagerGame.Instance.UpdateScore(_score);
+        
+        // À chaque fois que le pointage est un multiple de 1000 on augmente la vitesse des
+        // ennemis de 2
         if (_score % 1000 == 0)
         {
             _vitesseEnnemi += 2f;
         }
 
+        // À chaque fois que le pointage est un multiple de 2000 on réduit le temps
+        // d'apparition de 1 seconde
         if(_score % 2000 == 0)
         {
             _tempsApparitionEnnemis -= 1f;
