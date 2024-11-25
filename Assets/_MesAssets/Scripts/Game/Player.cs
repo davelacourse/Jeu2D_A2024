@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab = default;
     [SerializeField] private GameObject _tripleLaserPrefab = default;
     [SerializeField] private float _delai = 0.5f;
-    [SerializeField] private int _viesJoueur = 3;
+    [SerializeField] private int _viesJoueur = 1;
     [SerializeField] private GameObject _playerHurt1 = default;
     [SerializeField] private GameObject _playerHurt2 = default;
     [SerializeField] private GameObject _bigExplosionPrefab = default;

@@ -26,6 +26,14 @@ public class GBMusic : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        if (Input.GetButtonDown("Mute"))
+        {
+            ToggleMusicOnOff();
+        }
+    }
+
     public void ToggleMusicOnOff()
     {
         if(_isMusicPlaying)

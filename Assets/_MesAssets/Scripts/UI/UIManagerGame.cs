@@ -70,6 +70,8 @@ public class UIManagerGame : MonoBehaviour  {
         
         // Si le joueur n'a plus de vie on lance la séquence de fin de partie
         if (noImage == 0) {
+            PlayerPrefs.SetInt("Score", GameManager.Instance.Score);
+            PlayerPrefs.Save();
             StartCoroutine("FinPartie");
         }
     }

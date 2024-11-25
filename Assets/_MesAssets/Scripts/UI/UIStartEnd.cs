@@ -12,42 +12,41 @@ public class UIStartEnd : MonoBehaviour
     // Scene de fin
     [Header("Variables pour fin de partie")]
     [SerializeField] private TextMeshProUGUI _txtGameOver = default;
-    [SerializeField] private TextMeshProUGUI _txtRecord = default;
     [SerializeField] private TextMeshProUGUI _txtScoreFin = default;
     [SerializeField] private Button _buttonMenu = default;
     [SerializeField] private Button _buttonQuitter = default;
 
     [Header("Variables pour scène départ")]
+    [SerializeField] private GameObject _panneauDepart = default;
+    [SerializeField] private GameObject _panneauBestScores = default;
     [SerializeField] private GameObject _buttonDemarrer = default;
-
+    [SerializeField] private GameObject _buttonRetour = default;
+    [SerializeField] private TMP_Text _txtCompteur = default;
 
     private void Start()
     {
+        //Initialise le UI si scène de départ
         if(SceneManager.GetActiveScene().buildIndex == 0)
         {
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_buttonDemarrer);
-        }
-        
-        
-        if(SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
-        {
-            if (PlayerPrefs.HasKey("Record"))
+
+            //Utilise un playerPrefs pour compteur le nombre de parties joué
+            //sur cet ordinateur
+            if (PlayerPrefs.HasKey("Compteur"))
             {
-                if(GameManager.Instance.Score > PlayerPrefs.GetInt("Record"))
-                {
-                    PlayerPrefs.SetInt("Record", GameManager.Instance.Score);
-                    PlayerPrefs.Save();
-                }
+                //Le compteur est augmenter quand le joueur clique sur Démarrer une nouvelle partie
+                _txtCompteur.text = "Nombres de parties : " + PlayerPrefs.GetInt("Compteur").ToString();
             }
             else
             {
-                PlayerPrefs.SetInt("Record", GameManager.Instance.Score);
-                PlayerPrefs.Save();
+                _txtCompteur.text = "Nombres de parties : 0";
             }
-
-            _txtRecord.text = "Record : " + PlayerPrefs.GetInt("Record").ToString();
-
+        }
+        
+        //Initialise le UI si scène de fin
+        if(SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+        {
             _buttonMenu.onClick.AddListener(OnMenuClick);
             _buttonQuitter.onClick.AddListener(OnQuitterClick);
             _txtScoreFin.text = "Votre pointage : " + GameManager.Instance.Score.ToString();
@@ -56,6 +55,7 @@ public class UIStartEnd : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(_buttonMenu.gameObject);
         }
     }
+
     public void OnQuitterClick()
     {
 #if UNITY_EDITOR
@@ -65,20 +65,18 @@ public class UIStartEnd : MonoBehaviour
 #endif
     }
 
-    public void OnResetRecordClick()
-    {
-        PlayerPrefs.DeleteKey("Record");
-        PlayerPrefs.Save();
-        _txtRecord.text = "Record : 0"; 
-    }
-    
-    public void OnMusicOnOffClick()
-    {
-        GBMusic.Instance.ToggleMusicOnOff();
-    }
-
     public void OnDemarrerClick()
     {
+        //Augemte le players pour le compteur de parties
+        if (PlayerPrefs.HasKey("Compteur"))
+        {
+            PlayerPrefs.SetInt("Compteur", PlayerPrefs.GetInt("Compteur") + 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Compteur", 1);
+        }
+
         int index = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(index + 1);
     }
@@ -86,6 +84,31 @@ public class UIStartEnd : MonoBehaviour
     public void OnMenuClick()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void OnBestScoresClick()
+    {
+        _panneauDepart.SetActive(false);
+        _panneauBestScores.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_buttonRetour.gameObject);
+
+        //Coroutine qui ramène le panneau de départ automatiquement après 60 secondes
+        StartCoroutine(DelaiRetourDebut());
+    }
+
+    IEnumerator DelaiRetourDebut()
+    {
+        yield return new WaitForSeconds(60f);
+        OnRetourClick();
+    }
+
+    public void OnRetourClick()
+    {
+        _panneauDepart.SetActive(true);
+        _panneauBestScores.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_buttonDemarrer.gameObject);
     }
 
     // Méthode qui affiche la fin de la partie et lance la coroutine d'animation
